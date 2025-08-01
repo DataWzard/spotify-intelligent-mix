@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intelligent Mix - AI-Powered Playlist Generation</title>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <style>
         * {
             margin: 0;
@@ -69,6 +68,24 @@
         .auth-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 35px rgba(29, 185, 84, 0.4);
+        }
+
+        .status {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .success {
+            background: rgba(29, 185, 84, 0.2);
+            border: 1px solid rgba(29, 185, 84, 0.5);
+        }
+
+        .error {
+            background: rgba(255, 59, 48, 0.2);
+            border: 1px solid rgba(255, 59, 48, 0.5);
         }
 
         .main-content {
@@ -172,12 +189,6 @@
             font-size: 0.8rem;
         }
 
-        .result-type {
-            opacity: 0.6;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-        }
-
         .genre-tags {
             display: flex;
             flex-wrap: wrap;
@@ -205,123 +216,6 @@
             border-color: #1ed760;
         }
 
-        .seeds-container {
-            margin-bottom: 25px;
-        }
-
-        .seeds-container h3 {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .seed-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            margin: 8px 0;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .seed-item:hover {
-            transform: translateX(3px);
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        .seed-item img {
-            width: 40px;
-            height: 40px;
-            border-radius: 5px;
-            margin-right: 12px;
-        }
-
-        .seed-info {
-            flex: 1;
-        }
-
-        .seed-title {
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 2px;
-        }
-
-        .seed-subtitle {
-            opacity: 0.8;
-            font-size: 0.8rem;
-        }
-
-        .remove-btn {
-            background: rgba(255, 59, 48, 0.8);
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.8rem;
-        }
-
-        .remove-btn:hover {
-            background: rgba(255, 59, 48, 1);
-            transform: scale(1.05);
-        }
-
-        .preferences {
-            margin-bottom: 25px;
-        }
-
-        .preferences h3 {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .pref-group {
-            margin-bottom: 15px;
-        }
-
-        .pref-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.3);
-            outline: none;
-            cursor: pointer;
-        }
-
-        .slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #1DB954;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(29, 185, 84, 0.5);
-        }
-
-        .select {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .select option {
-            background: #333;
-            color: white;
-        }
-
         .generate-btn {
             width: 100%;
             background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
@@ -333,7 +227,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
-            margin-bottom: 15px;
+            margin: 20px 0;
             font-weight: 600;
         }
 
@@ -345,70 +239,6 @@
         .generate-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
-        }
-
-        .playlist-container {
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .track-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            margin: 8px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .track-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(3px);
-        }
-
-        .track-item img {
-            width: 45px;
-            height: 45px;
-            border-radius: 5px;
-            margin-right: 12px;
-        }
-
-        .track-info {
-            flex: 1;
-        }
-
-        .track-title {
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 2px;
-        }
-
-        .track-artist {
-            opacity: 0.8;
-            font-size: 0.8rem;
-        }
-
-        .play-btn {
-            background: #1DB954;
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .play-btn:hover {
-            background: #1ed760;
-            transform: scale(1.1);
         }
 
         .loading {
@@ -431,31 +261,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            opacity: 0.7;
-        }
-
-        .save-btn {
-            width: 100%;
-            background: linear-gradient(45deg, #9b59b6, #8e44ad);
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(155, 89, 182, 0.3);
-            font-weight: 600;
-        }
-
-        .save-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(155, 89, 182, 0.4);
-        }
-
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -469,10 +274,6 @@
             .container {
                 padding: 15px;
             }
-
-            .section {
-                padding: 20px;
-            }
         }
     </style>
 </head>
@@ -483,8 +284,13 @@
             <p>AI-powered playlist generation that learns your musical DNA</p>
         </div>
 
+        <div class="status" id="status">
+            <p>✅ App loaded successfully!</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Ready to connect with Spotify</p>
+        </div>
+
         <div class="auth-section" id="authSection">
-            <button class="auth-btn" onclick="authenticateSpotify()">
+            <button class="auth-btn" id="authButton">
                 🎵 Connect with Spotify
             </button>
             <p style="margin-top: 15px; opacity: 0.8; font-size: 0.9rem;">
@@ -504,47 +310,43 @@
                 </div>
 
                 <!-- Genre Selection -->
-                <div class="pref-group">
-                    <label class="pref-label">Popular Genres</label>
+                <div>
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Popular Genres</label>
                     <div class="genre-tags" id="genreTags"></div>
                 </div>
 
                 <!-- Current Seeds -->
-                <div class="seeds-container">
-                    <h3>Selected Seeds</h3>
+                <div style="margin: 25px 0;">
+                    <h3 style="margin-bottom: 15px;">Selected Seeds</h3>
                     <div id="seedsList">
-                        <div class="empty-state" style="padding: 20px;">
+                        <div style="text-align: center; padding: 20px; opacity: 0.7;">
                             Add tracks, artists, or genres to get started
                         </div>
                     </div>
                 </div>
 
                 <!-- Preferences -->
-                <div class="preferences">
-                    <h3>Preferences</h3>
+                <div>
+                    <h3 style="margin-bottom: 15px;">Preferences</h3>
                     
-                    <div class="pref-group">
-                        <label class="pref-label">Playlist Length: <span id="lengthValue">25</span> tracks</label>
-                        <input type="range" class="slider" id="lengthSlider" min="10" max="50" value="25">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">
+                            Playlist Length: <span id="lengthValue">25</span> tracks
+                        </label>
+                        <input type="range" id="lengthSlider" min="10" max="50" value="25" 
+                               style="width: 100%; cursor: pointer;">
                     </div>
                     
-                    <div class="pref-group">
-                        <label class="pref-label">Diversity: <span id="diversityValue">Medium</span></label>
-                        <input type="range" class="slider" id="diversitySlider" min="0" max="100" value="50">
-                    </div>
-                    
-                    <div class="pref-group">
-                        <label class="pref-label">Energy Flow</label>
-                        <select class="select" id="progressionSelect">
-                            <option value="natural">Natural Flow</option>
-                            <option value="energy_up">Build Energy</option>
-                            <option value="energy_down">Wind Down</option>
-                            <option value="consistent">Keep Consistent</option>
-                        </select>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">
+                            Diversity: <span id="diversityValue">Medium</span>
+                        </label>
+                        <input type="range" id="diversitySlider" min="0" max="100" value="50"
+                               style="width: 100%; cursor: pointer;">
                     </div>
                 </div>
 
-                <button class="generate-btn" id="generateBtn" onclick="generatePlaylist()" disabled>
+                <button class="generate-btn" id="generateBtn" disabled>
                     🚀 Generate Intelligent Mix
                 </button>
             </div>
@@ -552,7 +354,7 @@
             <div class="section">
                 <h2>🎵 Your Playlist</h2>
                 <div id="playlistContainer">
-                    <div class="empty-state">
+                    <div style="text-align: center; padding: 40px; opacity: 0.7;">
                         <p>Your intelligent mix will appear here</p>
                         <p style="font-size: 0.9rem; margin-top: 10px;">Add some seeds and hit generate!</p>
                     </div>
@@ -562,7 +364,7 @@
     </div>
 
     <script>
-        // 🔧 SETUP: Your Spotify Client ID
+        // Configuration
         const CLIENT_ID = 'f1e972996917481d7a1a9e54dfedae1bf';
         const REDIRECT_URI = window.location.origin + window.location.pathname;
         const SCOPES = [
@@ -575,7 +377,7 @@
             'playlist-modify-private'
         ].join(' ');
 
-        // App State
+        // Global variables
         let accessToken = null;
         let searchTimeout = null;
         
@@ -587,48 +389,66 @@
             },
             preferences: {
                 length: 25,
-                diversity: 0.5,
-                progression: 'natural'
+                diversity: 0.5
             },
             currentPlaylist: null
         };
 
-        // Popular genres for quick selection
+        // Popular genres
         const popularGenres = [
             'pop', 'rock', 'hip-hop', 'jazz', 'electronic', 'indie',
             'country', 'r-n-b', 'reggae', 'blues', 'folk', 'punk',
-            'metal', 'disco', 'funk', 'house', 'techno', 'ambient',
-            'acoustic', 'alternative', 'dance', 'classical'
+            'metal', 'disco', 'funk', 'house', 'techno', 'ambient'
         ];
 
-        // Authentication
+        // Authentication function
         function authenticateSpotify() {
+            console.log('🎵 Starting Spotify authentication...');
+            
             const authUrl = `https://accounts.spotify.com/authorize?` +
                 `client_id=${CLIENT_ID}&` +
                 `response_type=token&` +
                 `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
                 `scope=${encodeURIComponent(SCOPES)}`;
             
+            console.log('Auth URL:', authUrl);
             window.location.href = authUrl;
         }
 
-        // Check for access token in URL
+        // Check for access token
         function checkForToken() {
             const hash = window.location.hash.substring(1);
             const params = new URLSearchParams(hash);
             const token = params.get('access_token');
+            const error = params.get('error');
+            
+            if (error) {
+                console.error('Spotify auth error:', error);
+                showStatus(`❌ Authorization error: ${error}`, 'error');
+                return false;
+            }
             
             if (token) {
                 accessToken = token;
+                console.log('✅ Got access token!');
                 window.location.hash = '';
                 initializeApp();
                 return true;
             }
+            
             return false;
         }
 
-        // Initialize the app
+        // Show status message
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('status');
+            statusEl.innerHTML = `<p>${message}</p>`;
+            statusEl.className = `status ${type}`;
+        }
+
+        // Initialize app after authentication
         function initializeApp() {
+            showStatus('🎉 Successfully connected to Spotify!', 'success');
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('mainContent').classList.add('active');
             
@@ -640,29 +460,27 @@
 
         // Setup genre tags
         function setupGenreTags() {
-            const genreContainer = document.getElementById('genreTags');
-            genreContainer.innerHTML = '';
+            const container = document.getElementById('genreTags');
+            container.innerHTML = '';
             
             popularGenres.forEach(genre => {
                 const tag = document.createElement('div');
                 tag.className = 'genre-tag';
                 tag.textContent = genre.charAt(0).toUpperCase() + genre.slice(1);
-                tag.onclick = () => toggleGenre(genre, tag);
-                genreContainer.appendChild(tag);
+                tag.addEventListener('click', () => toggleGenre(genre, tag));
+                container.appendChild(tag);
             });
         }
 
         // Setup event listeners
         function setupEventListeners() {
+            // Auth button
+            document.getElementById('authButton').addEventListener('click', authenticateSpotify);
+            
             // Search input
             const searchInput = document.getElementById('searchInput');
             searchInput.addEventListener('input', handleSearch);
-            searchInput.addEventListener('focus', () => {
-                if (searchInput.value.trim()) {
-                    document.getElementById('searchResults').classList.add('active');
-                }
-            });
-
+            
             // Sliders
             document.getElementById('lengthSlider').addEventListener('input', (e) => {
                 appState.preferences.length = parseInt(e.target.value);
@@ -680,19 +498,11 @@
                 document.getElementById('diversityValue').textContent = label;
             });
 
-            document.getElementById('progressionSelect').addEventListener('change', (e) => {
-                appState.preferences.progression = e.target.value;
-            });
-
-            // Click outside to close search results
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.search-container')) {
-                    document.getElementById('searchResults').classList.remove('active');
-                }
-            });
+            // Generate button
+            document.getElementById('generateBtn').addEventListener('click', generatePlaylist);
         }
 
-        // Handle search input
+        // Handle search
         function handleSearch(e) {
             const query = e.target.value.trim();
             
@@ -712,6 +522,8 @@
 
         // Search Spotify
         async function searchSpotify(query) {
+            if (!accessToken) return;
+            
             try {
                 const response = await fetch(
                     `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track,artist&limit=8`,
@@ -731,14 +543,14 @@
 
         // Display search results
         function displaySearchResults(data) {
-            const resultsContainer = document.getElementById('searchResults');
-            resultsContainer.innerHTML = '';
+            const container = document.getElementById('searchResults');
+            container.innerHTML = '';
 
             // Add tracks
             if (data.tracks && data.tracks.items) {
                 data.tracks.items.forEach(track => {
                     const result = createSearchResult(track, 'track');
-                    resultsContainer.appendChild(result);
+                    container.appendChild(result);
                 });
             }
 
@@ -746,14 +558,14 @@
             if (data.artists && data.artists.items) {
                 data.artists.items.forEach(artist => {
                     const result = createSearchResult(artist, 'artist');
-                    resultsContainer.appendChild(result);
+                    container.appendChild(result);
                 });
             }
 
-            resultsContainer.classList.add('active');
+            container.classList.add('active');
         }
 
-        // Create search result element
+        // Create search result
         function createSearchResult(item, type) {
             const div = document.createElement('div');
             div.className = 'search-result';
@@ -767,11 +579,10 @@
                 <div class="result-info">
                     <div class="result-name">${name}</div>
                     <div class="result-artist">${subtitle}</div>
-                    <div class="result-type">${type}</div>
                 </div>
             `;
             
-            div.onclick = () => addSeed(item, type);
+            div.addEventListener('click', () => addSeed(item, type));
             
             return div;
         }
@@ -819,68 +630,59 @@
         // Update seeds display
         function updateSeedsDisplay() {
             const container = document.getElementById('seedsList');
-            container.innerHTML = '';
-
-            const allSeeds = [
-                ...appState.seeds.tracks,
-                ...appState.seeds.artists,
-                ...appState.seeds.genres.map(genre => ({
-                    name: genre.charAt(0).toUpperCase() + genre.slice(1),
-                    subtitle: 'Genre',
-                    image: '',
-                    type: 'genre'
-                }))
-            ];
-
-            if (allSeeds.length === 0) {
-                container.innerHTML = '<div class="empty-state" style="padding: 20px;">Add tracks, artists, or genres to get started</div>';
+            const totalSeeds = appState.seeds.tracks.length + appState.seeds.artists.length + appState.seeds.genres.length;
+            
+            if (totalSeeds === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px; opacity: 0.7;">Add tracks, artists, or genres to get started</div>';
                 document.getElementById('generateBtn').disabled = true;
                 return;
             }
 
-            allSeeds.forEach((seed, index) => {
-                const seedDiv = createSeedElement(seed, () => removeSeed(seed, index));
-                container.appendChild(seedDiv);
+            let html = '';
+            
+            // Add all seeds
+            [...appState.seeds.tracks, ...appState.seeds.artists].forEach(seed => {
+                html += `
+                    <div style="display: flex; align-items: center; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.15); border-radius: 10px;">
+                        ${seed.image ? `<img src="${seed.image}" style="width: 40px; height: 40px; border-radius: 5px; margin-right: 12px;" alt="${seed.name}">` : '<div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 5px; margin-right: 12px;"></div>'}
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; font-size: 0.9rem;">${seed.name}</div>
+                            <div style="opacity: 0.8; font-size: 0.8rem;">${seed.subtitle}</div>
+                        </div>
+                        <button onclick="removeSeed('${seed.type}', '${seed.id}')" style="background: rgba(255, 59, 48, 0.8); color: white; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer;">✕</button>
+                    </div>
+                `;
             });
 
+            // Add genres
+            appState.seeds.genres.forEach(genre => {
+                html += `
+                    <div style="display: flex; align-items: center; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.15); border-radius: 10px;">
+                        <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 5px; margin-right: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🎵</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; font-size: 0.9rem;">${genre.charAt(0).toUpperCase() + genre.slice(1)}</div>
+                            <div style="opacity: 0.8; font-size: 0.8rem;">Genre</div>
+                        </div>
+                        <button onclick="removeSeed('genre', '${genre}')" style="background: rgba(255, 59, 48, 0.8); color: white; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer;">✕</button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
             document.getElementById('generateBtn').disabled = false;
         }
 
-        // Create seed element
-        function createSeedElement(seed, onRemove) {
-            const div = document.createElement('div');
-            div.className = 'seed-item';
-            
-            div.innerHTML = `
-                ${seed.image ? `<img src="${seed.image}" alt="${seed.name}">` : '<div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 5px; margin-right: 12px;"></div>'}
-                <div class="seed-info">
-                    <div class="seed-title">${seed.name}</div>
-                    <div class="seed-subtitle">${seed.subtitle}</div>
-                </div>
-                <button class="remove-btn">✕</button>
-            `;
-            
-            div.querySelector('.remove-btn').onclick = (e) => {
-                e.stopPropagation();
-                onRemove();
-            };
-            
-            return div;
-        }
-
         // Remove seed
-        function removeSeed(seed, index) {
-            if (seed.type === 'track') {
-                appState.seeds.tracks = appState.seeds.tracks.filter(t => t.id !== seed.id);
-            } else if (seed.type === 'artist') {
-                appState.seeds.artists = appState.seeds.artists.filter(a => a.id !== seed.id);
-            } else if (seed.type === 'genre') {
-                const genreName = seed.name.toLowerCase();
-                appState.seeds.genres = appState.seeds.genres.filter(g => g !== genreName);
-                
+        function removeSeed(type, id) {
+            if (type === 'track') {
+                appState.seeds.tracks = appState.seeds.tracks.filter(t => t.id !== id);
+            } else if (type === 'artist') {
+                appState.seeds.artists = appState.seeds.artists.filter(a => a.id !== id);
+            } else if (type === 'genre') {
+                appState.seeds.genres = appState.seeds.genres.filter(g => g !== id);
                 // Update genre tag UI
                 const tag = Array.from(document.querySelectorAll('.genre-tag')).find(
-                    el => el.textContent.toLowerCase() === genreName
+                    el => el.textContent.toLowerCase() === id
                 );
                 if (tag) tag.classList.remove('selected');
             }
@@ -890,54 +692,46 @@
 
         // Generate playlist
         async function generatePlaylist() {
-            const generateBtn = document.getElementById('generateBtn');
-            const playlistContainer = document.getElementById('playlistContainer');
+            if (!accessToken) {
+                alert('Please connect to Spotify first');
+                return;
+            }
+
+            const btn = document.getElementById('generateBtn');
+            const container = document.getElementById('playlistContainer');
             
-            generateBtn.disabled = true;
-            generateBtn.innerHTML = '<div class="spinner"></div>Generating...';
-            
-            playlistContainer.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating your intelligent mix...</p></div>';
+            btn.disabled = true;
+            btn.innerHTML = '<div class="spinner"></div>Generating...';
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Creating your intelligent mix...</p></div>';
 
             try {
-                const recommendations = await getSpotifyRecommendations();
-                
-                if (recommendations.length === 0) {
-                    throw new Error('No recommendations found');
-                }
-
-                const intelligentPlaylist = await processRecommendations(recommendations);
-                
-                appState.currentPlaylist = intelligentPlaylist;
-                displayPlaylist(intelligentPlaylist);
-                
+                const recommendations = await getRecommendations();
+                displayPlaylist(recommendations);
+                appState.currentPlaylist = recommendations;
             } catch (error) {
                 console.error('Error generating playlist:', error);
-                playlistContainer.innerHTML = `
-                    <div class="empty-state" style="color: #ff6b6b;">
-                        <p>❌ Error generating playlist</p>
-                        <p style="font-size: 0.9rem; margin-top: 10px;">Please try again or adjust your seeds</p>
-                    </div>
-                `;
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff6b6b;"><p>❌ Error generating playlist</p><p style="font-size: 0.9rem; margin-top: 10px;">Please try again</p></div>';
             } finally {
-                generateBtn.disabled = false;
-                generateBtn.innerHTML = '🚀 Generate Intelligent Mix';
+                btn.disabled = false;
+                btn.innerHTML = '🚀 Generate Intelligent Mix';
             }
         }
 
-        // Get Spotify recommendations
-        async function getSpotifyRecommendations() {
+        // Get recommendations
+        async function getRecommendations() {
             const params = new URLSearchParams();
             
-            // Add seeds (max 5 total)
-            const trackSeeds = appState.seeds.tracks.slice(0, 2).map(t => t.id);
-            const artistSeeds = appState.seeds.artists.slice(0, 2).map(a => a.id);
-            const genreSeeds = appState.seeds.genres.slice(0, 2);
+            if (appState.seeds.tracks.length > 0) {
+                params.append('seed_tracks', appState.seeds.tracks.slice(0, 2).map(t => t.id).join(','));
+            }
+            if (appState.seeds.artists.length > 0) {
+                params.append('seed_artists', appState.seeds.artists.slice(0, 2).map(a => a.id).join(','));
+            }
+            if (appState.seeds.genres.length > 0) {
+                params.append('seed_genres', appState.seeds.genres.slice(0, 2).join(','));
+            }
             
-            if (trackSeeds.length > 0) params.append('seed_tracks', trackSeeds.join(','));
-            if (artistSeeds.length > 0) params.append('seed_artists', artistSeeds.join(','));
-            if (genreSeeds.length > 0) params.append('seed_genres', genreSeeds.join(','));
-            
-            params.append('limit', Math.min(100, appState.preferences.length * 2));
+            params.append('limit', appState.preferences.length);
             params.append('min_popularity', '20');
             params.append('max_popularity', '90');
             
@@ -954,118 +748,12 @@
             return data.tracks || [];
         }
 
-        // Process recommendations with intelligent filtering
-        async function processRecommendations(tracks) {
-            // Get audio features for all tracks
-            const trackIds = tracks.map(t => t.id).join(',');
-            const featuresResponse = await fetch(
-                `https://api.spotify.com/v1/audio-features?ids=${trackIds}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                }
-            );
-            
-            const featuresData = await featuresResponse.json();
-            const features = featuresData.audio_features;
-            
-            // Combine tracks with their audio features
-            const tracksWithFeatures = tracks.map((track, index) => ({
-                ...track,
-                audioFeatures: features[index]
-            })).filter(track => track.audioFeatures);
-            
-            // Score and sort tracks
-            const scoredTracks = tracksWithFeatures.map(track => ({
-                ...track,
-                score: calculateTrackScore(track.audioFeatures)
-            }));
-            
-            // Apply diversity and progression
-            let finalPlaylist = applyIntelligentSelection(scoredTracks);
-            finalPlaylist = applyProgression(finalPlaylist);
-            
-            return finalPlaylist.slice(0, appState.preferences.length);
-        }
-
-        // Calculate track score based on audio features
-        function calculateTrackScore(features) {
-            let score = 0;
-            
-            score += features.energy * 0.25;
-            score += features.danceability * 0.2;
-            score += features.valence * 0.15;
-            score += (1 - features.speechiness) * 0.1;
-            score += Math.random() * 0.3; // Add randomness for diversity
-            
-            return score;
-        }
-
-        // Apply intelligent selection with diversity
-        function applyIntelligentSelection(scoredTracks) {
-            const diversityFactor = appState.preferences.diversity;
-            const selected = [];
-            const remaining = [...scoredTracks].sort((a, b) => b.score - a.score);
-            
-            while (selected.length < appState.preferences.length && remaining.length > 0) {
-                if (diversityFactor > 0.7) {
-                    // High diversity: pick more randomly from top candidates
-                    const topCandidates = remaining.slice(0, Math.min(15, remaining.length));
-                    const randomIndex = Math.floor(Math.random() * topCandidates.length);
-                    selected.push(topCandidates[randomIndex]);
-                    remaining.splice(remaining.indexOf(topCandidates[randomIndex]), 1);
-                } else {
-                    // Lower diversity: pick top scores
-                    selected.push(remaining.shift());
-                }
-            }
-            
-            return selected;
-        }
-
-        // Apply progression ordering
-        function applyProgression(tracks) {
-            const progression = appState.preferences.progression;
-            
-            switch (progression) {
-                case 'energy_up':
-                    return tracks.sort((a, b) => a.audioFeatures.energy - b.audioFeatures.energy);
-                case 'energy_down':
-                    return tracks.sort((a, b) => b.audioFeatures.energy - a.audioFeatures.energy);
-                case 'consistent':
-                    return tracks;
-                case 'natural':
-                default:
-                    return createNaturalFlow(tracks);
-            }
-        }
-
-        // Create natural flow
-        function createNaturalFlow(tracks) {
-            // Simple algorithm: alternate between different energy levels
-            const high = tracks.filter(t => t.audioFeatures.energy > 0.7);
-            const medium = tracks.filter(t => t.audioFeatures.energy >= 0.4 && t.audioFeatures.energy <= 0.7);
-            const low = tracks.filter(t => t.audioFeatures.energy < 0.4);
-            
-            const result = [];
-            const maxLength = Math.max(high.length, medium.length, low.length);
-            
-            for (let i = 0; i < maxLength; i++) {
-                if (medium[i]) result.push(medium[i]);
-                if (high[i]) result.push(high[i]);
-                if (low[i]) result.push(low[i]);
-            }
-            
-            return result.slice(0, tracks.length);
-        }
-
         // Display playlist
         function displayPlaylist(tracks) {
             const container = document.getElementById('playlistContainer');
             
             if (tracks.length === 0) {
-                container.innerHTML = '<div class="empty-state"><p>No tracks found. Try different seeds!</p></div>';
+                container.innerHTML = '<div style="text-align: center; padding: 40px; opacity: 0.7;"><p>No tracks found. Try different seeds!</p></div>';
                 return;
             }
             
@@ -1075,20 +763,20 @@
                 const artists = track.artists.map(a => a.name).join(', ');
                 
                 html += `
-                    <div class="track-item" onclick="playTrack('${track.uri}', ${index})">
-                        ${image ? `<img src="${image}" alt="${track.name}">` : '<div style="width: 45px; height: 45px; background: rgba(255,255,255,0.2); border-radius: 5px; margin-right: 12px;"></div>'}
-                        <div class="track-info">
-                            <div class="track-title">${track.name}</div>
-                            <div class="track-artist">${artists}</div>
+                    <div style="display: flex; align-items: center; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.1); border-radius: 10px; cursor: pointer;" onclick="playTrack(${index})">
+                        ${image ? `<img src="${image}" style="width: 45px; height: 45px; border-radius: 5px; margin-right: 12px;" alt="${track.name}">` : '<div style="width: 45px; height: 45px; background: rgba(255,255,255,0.2); border-radius: 5px; margin-right: 12px;"></div>'}
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; font-size: 0.9rem; margin-bottom: 2px;">${track.name}</div>
+                            <div style="opacity: 0.8; font-size: 0.8rem;">${artists}</div>
                         </div>
-                        <button class="play-btn" onclick="event.stopPropagation(); playTrack('${track.uri}', ${index})">▶</button>
+                        <button onclick="event.stopPropagation(); playTrack(${index})" style="background: #1DB954; color: white; border: none; padding: 8px; border-radius: 50%; cursor: pointer; width: 35px; height: 35px;">▶</button>
                     </div>
                 `;
             });
             
             // Add save button
             html += `
-                <button class="save-btn" onclick="savePlaylist()" style="margin-top: 20px;">
+                <button onclick="savePlaylist()" style="width: 100%; background: linear-gradient(45deg, #9b59b6, #8e44ad); color: white; border: none; padding: 12px; font-size: 1rem; border-radius: 12px; cursor: pointer; margin-top: 20px;">
                     💾 Save to Spotify
                 </button>
             `;
@@ -1096,13 +784,14 @@
             container.innerHTML = html;
         }
 
-        // Play track (placeholder - would need Web Playback SDK)
-        function playTrack(uri, index) {
-            console.log('Playing track:', uri);
-            alert(`Playing: ${appState.currentPlaylist[index].name}\n\nNote: Full playback requires Spotify Premium and additional setup.`);
+        // Play track (placeholder)
+        function playTrack(index) {
+            const track = appState.currentPlaylist[index];
+            console.log('Playing:', track.name);
+            alert(`Playing: ${track.name}\n\nNote: Full playback requires Spotify Premium and additional setup.`);
         }
 
-        // Save playlist to Spotify
+        // Save playlist
         async function savePlaylist() {
             if (!appState.currentPlaylist || appState.currentPlaylist.length === 0) {
                 alert('No playlist to save');
@@ -1110,11 +799,9 @@
             }
 
             try {
-                // Get user ID
+                // Get user profile
                 const userResponse = await fetch('https://api.spotify.com/v1/me', {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
                 const userData = await userResponse.json();
                 
@@ -1153,14 +840,28 @@
             }
         }
 
-        // Initialize app on page load
-        window.addEventListener('DOMContentLoaded', () => {
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 App starting...');
+            console.log('Client ID:', CLIENT_ID);
+            console.log('Redirect URI:', REDIRECT_URI);
+            
+            // Setup auth button immediately
+            document.getElementById('authButton').addEventListener('click', authenticateSpotify);
+            
+            // Check if returning from Spotify auth
             if (!checkForToken()) {
-                console.log('No token found, showing auth screen');
+                console.log('No token found - ready for authentication');
             }
         });
 
-        console.log('🚀 Intelligent Mix App loaded successfully');
+        // Make functions globally available
+        window.authenticateSpotify = authenticateSpotify;
+        window.removeSeed = removeSeed;
+        window.playTrack = playTrack;
+        window.savePlaylist = savePlaylist;
+
+        console.log('✅ Intelligent Mix App loaded successfully');
     </script>
 </body>
 </html>
