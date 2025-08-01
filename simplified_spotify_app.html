@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Mix - Spotify App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .auth-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .auth-btn {
+            background: linear-gradient(45deg, #1DB954, #1ed760);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(29, 185, 84, 0.3);
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(29, 185, 84, 0.4);
+        }
+
+        .status {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .success {
+            background: rgba(29, 185, 84, 0.2);
+            border: 1px solid rgba(29, 185, 84, 0.5);
+        }
+
+        .error {
+            background: rgba(255, 59, 48, 0.2);
+            border: 1px solid rgba(255, 59, 48, 0.5);
+        }
+
+        .main-content {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .main-content.active {
+            display: grid;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 Intelligent Mix</h1>
+            <p>AI-powered playlist generation with Spotify</p>
+        </div>
+
+        <div class="status" id="status">
+            <p>✅ App loaded successfully!</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Ready to connect with Spotify</p>
+        </div>
+
+        <div class="auth-section" id="authSection">
+            <button class="auth-btn" onclick="authenticateSpotify()">
+                🎵 Connect with Spotify
+            </button>
+            <p style="margin-top: 15px; opacity: 0.8;">
+                Click to authorize and start creating intelligent playlists
+            </p>
+        </div>
+
+        <div class="main-content" id="mainContent">
+            <div class="section">
+                <h2>🎯 Build Your Mix</h2>
+                <p>Connected! The full app interface will load here.</p>
+            </div>
+
+            <div class="section">
+                <h2>🎵 Your Playlist</h2>
+                <p>Your intelligent mix will appear here</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 🔧 SETUP: Replace with your actual Spotify Client ID
+        const CLIENT_ID = 'BQC8k9t7DQf6nBGGoWO0OCZEt-2aA1NWUvnKd1mkivivtu8Qy3twSZmiDj5GL4aBGkhAy5dAnYcWffeGnrcnorzCnkKpiuIGrdY3h54y2flHYGmg-MNW6XRtOItSZuSlVRS_aFtsJw0ajtE82MXyx2d-ORnjQ628qU5_INn6ko_pR-lJCBh_9vsBHDGINqk480J51Wuqu4ZNosFjdpfWQd5zppq49lPi9FOZzPCO140AXxZGOVV46iWaATdP6lXNBgiLkzIrY7VAP0vcDuD217-DtSFm5V_3mfk5qE9eTGZrBsNVGSEC0dS7hpb6_AKVaJZB'; // ⚠️ REPLACE THIS
+        const REDIRECT_URI = window.location.origin + window.location.pathname;
+        
+        console.log('🚀 App initialized');
+        console.log('📍 Redirect URI:', REDIRECT_URI);
+        console.log('🔑 Client ID:', CLIENT_ID);
+
+        function authenticateSpotify() {
+            if (CLIENT_ID === 'your_spotify_client_id') {
+                document.getElementById('status').innerHTML = `
+                    <p style="color: #ff6b6b;">⚠️ Setup Required</p>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">
+                        Please update the CLIENT_ID in the code with your Spotify Client ID
+                    </p>
+                    <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.8;">
+                        Get it from: <a href="https://developer.spotify.com/dashboard/" target="_blank" style="color: #1DB954;">Spotify Developer Dashboard</a>
+                    </p>
+                `;
+                document.getElementById('status').className = 'status error';
+                return;
+            }
+
+            const SCOPES = [
+                'streaming',
+                'user-read-email',
+                'user-read-private',
+                'user-read-playback-state',
+                'user-modify-playback-state',
+                'playlist-modify-public',
+                'playlist-modify-private'
+            ].join(' ');
+
+            const authUrl = `https://accounts.spotify.com/authorize?` +
+                `client_id=${CLIENT_ID}&` +
+                `response_type=token&` +
+                `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
+                `scope=${encodeURIComponent(SCOPES)}`;
+            
+            window.location.href = authUrl;
+        }
+
+        // Check for access token in URL
+        function checkForToken() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const token = params.get('access_token');
+            
+            if (token) {
+                document.getElementById('status').innerHTML = `
+                    <p>🎉 Successfully connected to Spotify!</p>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">
+                        Token: ${token.substring(0, 20)}...
+                    </p>
+                `;
+                document.getElementById('status').className = 'status success';
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('mainContent').classList.add('active');
+                
+                // Clear hash from URL
+                window.location.hash = '';
+                return true;
+            }
+            return false;
+        }
+
+        // Test if everything is working
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ DOM loaded');
+            
+            if (!checkForToken()) {
+                console.log('📝 No token found, showing auth screen');
+            }
+
+            // Test if all elements exist
+            const elements = ['status', 'authSection', 'mainContent'];
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    console.log(`✅ Element ${id} found`);
+                } else {
+                    console.error(`❌ Element ${id} not found`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
